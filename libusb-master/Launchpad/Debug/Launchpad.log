@@ -1,0 +1,8 @@
+﻿  Launchpad.cpp
+c:\development\libusb-master\libusb\libusb.h(738): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(738): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\development\libusb-master\libusb\libusb.h(769): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(769): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\development\libusb-master\libusb\libusb.h(1262): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(1262): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+  Launchpad.vcxproj -> C:\Development\libusb-master\msvc\Debug\Launchpad.exe
