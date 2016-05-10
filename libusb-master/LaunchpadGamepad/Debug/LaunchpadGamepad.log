@@ -1,0 +1,18 @@
+﻿  LaunchpadGamepad.cpp
+c:\development\libusb-master\libusb\libusb.h(738): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(738): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\development\libusb-master\libusb\libusb.h(769): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(769): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\development\libusb-master\libusb\libusb.h(1262): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\development\libusb-master\libusb\libusb.h(1262): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(163): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(164): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(175): warning C4838: conversion from 'int' to 'unsigned char' requires a narrowing conversion
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(181): warning C4838: conversion from 'int' to 'unsigned char' requires a narrowing conversion
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(192): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(193): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(204): warning C4838: conversion from 'int' to 'unsigned char' requires a narrowing conversion
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(210): warning C4838: conversion from 'int' to 'unsigned char' requires a narrowing conversion
+c:\development\libusb-master\launchpadgamepad\launchpadgamepad.cpp(333): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+  LaunchpadGamepad.vcxproj -> C:\Development\libusb-master\msvc\Debug\LaunchpadGamepad.exe

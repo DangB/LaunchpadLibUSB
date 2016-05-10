@@ -11,6 +11,7 @@ struct libusb_device_handle *devh = NULL;
 static libusb_context *ctx = NULL;
 
 int actual;
+int actual2;
 int r;
 int l;
 int *completed = 0;
@@ -19,53 +20,34 @@ unsigned char vel;
 unsigned char buffer[64];
 unsigned char rec[64];
 unsigned char all_light_off[] = { 0x13, 0xF0, 0x00, 0x20, 0x13, 0x29, 0x02, 0x10, 0x17, 0x0E, 0x00, 0xF7 };
+unsigned char result[64];
+void get();
 
+void get() {
 
-static void LIBUSB_CALL cb_in(struct libusb_transfer *receive)
-{
-
-	if (receive->status == LIBUSB_TRANSFER_COMPLETED)
-	{
-		for (int i = 0; i < sizeof(receive->buffer); i++) {
-			printf("%0x", receive->buffer[i]);
+	r = libusb_bulk_transfer(devh, 0x81, buffer, sizeof(buffer), &actual, 0);
+	if (r == 0) {
+		for (int i = 0; i < actual; i++) {
+			printf("%0x", buffer[i]);
 		}
 		printf("\n");
 
-		libusb_submit_transfer(receive);
-	}
-}
-//
-// static void LIBUSB_CALL cb_out(struct libusb_transfer *send) {
-//	unsigned char data9[] = { 0x13, 0xF0, 0x00, 0x20, 0x13, 0x29, 0x02, 0x10, 0x13, 0x0A, 0x51, 0x55, 0x15, 0xF7 };
-//	r = libusb_bulk_transfer(devh, 1, data9, 64, &actual, 0);
-//	printf("SEND function:, %s",libusb_error_name(r));
-//	printf("\n");
-//	libusb_submit_transfer(send);
-//}
-
-void get() {
-	r = libusb_bulk_transfer(devh, 129, buffer, sizeof(buffer), &actual, 0);
-
-	for (int i = 0; i < actual; i++) {
-		printf("%0x", buffer[i]);
-	}
-	printf("\n");
-
-
-	midi = buffer[2];
-	vel = buffer[3];
-
-	unsigned char light_on[] = { 0x19, 0x90, midi, 0x2d };
-	unsigned char light_off[] = { 0x19, 0x90, midi, 0x00 };
-
-	if (vel > 55) {
-		r = libusb_bulk_transfer(devh, 1, light_on, sizeof(light_on), &actual, 0);
+		for (int i = 0; i < actual; i = i + 4) {
+			for (int j = 0; j < 4; j++) {
+				result[j] = buffer[j + i];
+			}
+			if (result[3] != 0) {
+				result[3] = 0x2d;
+			}
+			else {
+				result[3] = 0;
+			}
+			r = libusb_interrupt_transfer(devh, 1, result, sizeof(4), &actual2, 0);
+			memset(result, 0, 64);
+		}
+		memset(buffer, 0, 64);
 	}
 
-	if (vel < 55) {
-		r = libusb_bulk_transfer(devh, 1, light_off, sizeof(light_off), &actual, 0);
-	}
-	memset(buffer, 0, 64);
 }
 
 int main()
@@ -98,80 +80,19 @@ int main()
 	r = libusb_bulk_transfer(devh, 129, init1, sizeof(init1), &actual, 100);
 
 	r = libusb_bulk_transfer(devh, 129, init2, sizeof(init2), &actual, 100);
-	Sleep(1000);
-	//-------------------------------------------------------------------------------------------
-	/*unsigned char data9[] = { 0x13, 0xF0, 0x00, 0x20, 0x13, 0x29, 0x02, 0x10, 0x13, 0x0A, 0x51, 0x55, 0x15, 0xF7 };
-	r = libusb_bulk_transfer(devh, 1, data9, 64, &actual, 0);*/
+	Sleep(100);
 
 	r = libusb_bulk_transfer(devh, 1, all_light_off, sizeof(all_light_off), &actual, 0);
+	Sleep(1000);
+	//--------------------------------------------------------------------------------------------
+	unsigned char set_all_led[64] = {0x14, 0xf0, 0x00, 0x20, 0x14, 0x29, 0x02, 0x10, 0x13, 0x0e, 45, 0xf7};
+	r = libusb_bulk_transfer(devh, 1, set_all_led, sizeof(set_all_led), &actual, 0);
 
+
+	//--------------------------------------------------------------------------------------------
 	while (!completed) {
 		get();
 	}
-
-	//-----------------------------------------------------------
-	//struct libusb_transfer *send;
-	//send = libusb_alloc_transfer(0);
-	//unsigned char dataOut[64];
-
-	//libusb_fill_bulk_transfer(send,
-	//	devh,
-	//	0x1, // Endpoint ID
-	//	dataOut,
-	//	64,
-	//	cb_out,
-	//	NULL,
-	//	0
-	//);
-
-	//if (libusb_submit_transfer(send) < 0)
-	//{
-	//	// Error
-	//	libusb_free_transfer(send);
-	//	free(dataOut);
-	//}
-
-//-------------------------------------------------------------
-	//struct libusb_transfer *receive;
-	//receive = libusb_alloc_transfer(0);
-	//unsigned char data[64];
-
-	//libusb_fill_bulk_transfer(receive,
-	//	devh,
-	//	0x81, // Endpoint ID
-	//	buffer,
-	//	sizeof(buffer),
-	//	cb_in,
-	//	data,
-	//	0
-	//);
-
-	//if (libusb_submit_transfer(receive) < 0)
-	//{
-	//	// error
-	//	libusb_free_transfer(receive);
-	//	free(data);
-	//}
-
-	//while (!completed)
-	//{
-	//	libusb_handle_events(ctx);
-	//}
-
-
-	//r = libusb_set_interface_alt_setting(devh, 1, 0);
-
-
-	//Sleep(3000);
-	//r = libusb_interrupt_transfer(devh, 1, data1, 0, &actual, 0);
-
-	//r = libusb_bulk_transfer(devh, 1, data1, 0, &actual, 10);
-	
-
-	//r = libusb_interrupt_transfer(devh, 1, data2, sizeof(data2), &actual, 0);
-
-	/*cout<<buffer<<endl;
-	cout << actual << endl;*/
 
 	r = libusb_release_interface(devh, 1);
 	if (r != 0) {
